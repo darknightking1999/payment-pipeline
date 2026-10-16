@@ -1,0 +1,10 @@
+package com.example.payment;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
+
+public record PaymentRequest(
+        @NotBlank String accountId,
+        @NotNull @Positive BigDecimal amount) {}
