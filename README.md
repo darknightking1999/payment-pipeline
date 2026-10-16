@@ -19,14 +19,16 @@ docker compose up --build
 ## Try it
 
 ```bash
-curl -X POST localhost:8080/payments \
-  -H "Content-Type: application/json" \
-  -d '{"accountId":"ACC1001","amount":1250.50}'
+Invoke-RestMethod -Method Post -Uri http://localhost:8082/payments `
+  -ContentType "application/json" `
+  -Body '{"accountId":"ACC1001","amount":1250.50}'
 
 docker compose logs -f notification-service
 ```
 
 You should see a log like `SMS -> account ACC1001: payment of 1250.50 received`.
+
+![SMS log](docs/sms-log.png)
 
 ## Design decisions
 - **Kafka key = accountId**: events of one account stay ordered inside a partition.
