@@ -29,6 +29,8 @@ docker compose logs -f notification-service
 You should see a log like `SMS -> account ACC1001: payment of 1250.50 received`.
 
 ![SMS log](docs/sms-log.png)
+![Retry and dead-letter](docs/ledger-dlt.png)
+![Idempotency](docs/ledger-idempotency.png)
 
 ## Design decisions
 - **Kafka key = accountId**: events of one account stay ordered inside a partition.
