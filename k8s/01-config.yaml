@@ -1,0 +1,20 @@
+# Non-secret settings
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pipeline-config
+  namespace: payments
+data:
+  KAFKA_BOOTSTRAP: "kafka:9092"
+  DB_URL: "jdbc:postgresql://postgres:5432/payments"
+---
+# Demo credentials only. In a real setup use a secret manager / sealed secrets and never commit real passwords.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pipeline-secret
+  namespace: payments
+type: Opaque
+stringData:
+  DB_USER: payments
+  DB_PASSWORD: payments

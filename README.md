@@ -42,3 +42,24 @@ You should see a log like `SMS -> account ACC1001: payment of 1250.50 received`.
 - [ ] Transactional outbox (avoid DB-write vs Kafka-publish inconsistency)
 - [ ] Kubernetes manifests (kind) with probes, resource limits, HPA
 - [ ] GitHub Actions: build, test, docker build
+
+## Run on Kubernetes (kind)
+
+```powershell
+docker build -t payment-service:local ./payment-service
+docker build -t notification-service:local ./notification-service
+docker build -t ledger-service:local ./ledger-service
+kubectl apply -f k8s/
+kubectl get pods -n payments
+```
+
+Includes startup/readiness/liveness probes, resource requests and limits, ConfigMap and Secret, and initContainers that wait for Postgres and Kafka.
+
+Self-healing and scaling:
+
+![Self-healing and scaling](docs/k8s-self-healing.png)
+
+### Known limitations
+- Kafka data is on `emptyDir`, so it is lost if the pod is deleted (demo only).
+- Topics are auto-created on first use. In production, create them explicitly.
+- payment-service writes to Postgres and publishes to Kafka separately (dual write). A transactional outbox would fix this.
